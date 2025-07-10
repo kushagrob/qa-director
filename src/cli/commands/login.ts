@@ -319,15 +319,5 @@ async function handleNewRole(
   }
 }
 
-// Utility function to validate role names
-function validateRoleName(roleName: string): boolean {
-  return /^[a-zA-Z][a-zA-Z0-9_-]*$/.test(roleName);
-}
-
-// Utility function to check if Anthropic API key is available
-function checkApiKey(): boolean {
-  return !!process.env.ANTHROPIC_API_KEY;
-}
-
 // Export for use in init command
 export { handleNewRole, recordLoginFlow };

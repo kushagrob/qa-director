@@ -1,16 +1,61 @@
 # QA Director
 
-AI-powered E2E test generation and management for Playwright projects.
+**The fastest way to build a complete, reliable E2E test suite — powered by Playwright MCP and Claude Code.**
 
-## Features
+QA Director is an AI-powered CLI tool that helps you go from **natural language → fully integrated Playwright test** in seconds. No brittle codegen. No manual test writing. No wrestling with auth, roles, or CI setup.
 
-- 🤖 **AI-Powered Test Generation**: Generate Playwright tests using natural language descriptions
-- 🔐 **Role-Based Authentication**: Manage multiple user roles with separate authentication states
-- ⚡ **Browser Automation**: Record login flows with Playwright codegen
-- 🔒 **Environment Variable Detection**: Automatically detect and replace sensitive data
-- 🔄 **GitHub Actions Integration**: Built-in CI/CD setup for E2E testing
-- 📁 **Project Organization**: Role-specific test folders and configurations
-- 🛠️ **Claude Code Integration**: Uses Anthropic's Claude Code for intelligent test generation
+Just describe the test. We’ll handle the rest.\
+
+## Why QA Director?
+
+- 🧠 **Natural Language to Test Code**  
+  Describe what you want to test in plain English. QA Director spins up a browser, runs the flow, and generates a clean, stable Playwright test — using Claude Code for intelligent placement and structure. **Works seamlessly even if you already have a Playwright E2E test suite set up.**
+
+- ⚙️ **Zero-Config Setup**  
+  Don’t know Playwright? You don’t have to. QA Director auto-detects your config, sets up test folders, handles environment variables, and wires up GitHub Actions — all out-of-the-box.
+
+- 🔐 **Auth + Roles Handled for You**  
+  Managing multiple users or sessions? QA Director records your login flows using Playwright codegen and stores role-based auth state — no extra code or boilerplate needed.
+
+- 🔒 **Smart Environment Variable Detection**  
+  Automatically scrubs and replaces sensitive values like tokens or emails with environment-safe variables.
+
+- 🚀 **CI-Ready from Day 1**  
+  Comes with GitHub Actions E2E workflows pre-configured. Just push and your tests run.
+
+## 🧩 How It Works
+
+```mermaid
+flowchart LR
+  A["📝 Describe Test<br/>in English"] --> B["🌐 Browser<br/>Automation"]
+  B --> C["🎭 Live Testing<br/>with Playwright"]
+  C --> D["🧠 AI Analysis<br/>& Code Gen"]
+  D --> E["✨ Generate<br/>Stable Tests"]
+  E --> F["📁 Organize by<br/>Role & Folder"]
+  F --> G["🚀 Auto-Deploy<br/>to CI/CD"]
+
+  classDef default fill:#2d3748,stroke:#4a5568,stroke-width:2px,color:#fff
+  classDef highlight fill:#3182ce,stroke:#2b6cb0,stroke-width:2px,color:#fff
+
+  class A,G highlight
+```
+
+1. **Describe your test**  
+   Run `qa-director generate` and write your scenario in plain English.
+
+2. **Live browser execution**  
+   A Chromium instance runs the flow using **Playwright MCP**, capturing DOM actions and screenshots.
+
+3. **Claude Code powers generation**  
+   **Claude Code SDK** converts the flow into a clean, reliable Playwright test, and figures out where in your codebase to put it.
+
+4. **Zero setup**  
+   Tests are placed in the right folder with auth, roles, and env vars handled automatically.
+
+5. **CI-ready**  
+   GitHub Actions is pre-configured—push your code and the tests just run.
+
+---
 
 ## Installation
 
@@ -65,27 +110,13 @@ This will:
 
 Initialize qa-director in your current project.
 
-**Options:**
-
-- `--playwright-config <path>` - Path to Playwright config file
-- `--test-dir <path>` - Test directory path
-- `--base-url <url>` - Base URL for tests
-- `--auth-dir <path>` - Authentication directory path
-- `--env-dir <path>` - Environment file path
-- `--skip-github-actions` - Skip GitHub Actions setup
-
-### `qa-director login <role>` or `qa-director login --role <role>`
+### `qa-director login <role>`
 
 Set up authentication for a specific role.
 
 **Arguments:**
 
-- `<role>` - Role name (when using positional argument)
-
-**Options:**
-
-- `--role <role>` - Role name (when using flag option)
-- `--refresh` - Refresh existing role authentication
+- `<role>` - Role name
 
 **Examples:**
 
@@ -104,10 +135,6 @@ Generate an E2E test using AI.
 
 - `<description>` - Natural language description of what to test
 
-**Options:**
-
-- `--role <role>` - Role to use for test generation (required)
-
 **Examples:**
 
 ```bash
@@ -118,12 +145,6 @@ qa-director generate --role admin "Test admin can delete a user account"
 ### `qa-director eject`
 
 Remove qa-director files and configurations from your project.
-
-**Options:**
-
-- `--dry-run` - Show what would be removed without actually removing
-- `--force` - Skip confirmation prompt
-- `--role <role>` - Remove only the specified role instead of everything
 
 **Examples:**
 
@@ -274,3 +295,7 @@ MIT License - see LICENSE file for details
 
 - GitHub Issues: Report bugs and request features
 - Documentation: See inline help with `qa-director <command> --help`
+
+## Why Claude Code?
+
+Claude Code offers maximum flexibility by adapting to different development team setups. It intelligently analyzes your repository to determine the best location for new tests, ensuring seamless integration with your existing test suite.

@@ -19,7 +19,7 @@ const program = new Command();
 program
   .name("qa-director")
   .description("AI-powered E2E test generation and management")
-  .version("1.0.0");
+  .version("0.1.0");
 
 // Global error handler
 process.on("uncaughtException", (error) => {
@@ -27,7 +27,7 @@ process.on("uncaughtException", (error) => {
   process.exit(1);
 });
 
-process.on("unhandledRejection", (reason, promise) => {
+process.on("unhandledRejection", (reason) => {
   loggers.error("Unhandled promise rejection:", reason);
   process.exit(1);
 });
@@ -54,7 +54,9 @@ program
   .action((positionalRole, options) => {
     const role = positionalRole || options.role;
     if (!role) {
-      loggers.error("Role name is required. Use either 'qa-director login <role>' or 'qa-director login --role <role>'");
+      loggers.error(
+        "Role name is required. Use either 'qa-director login <role>' or 'qa-director login --role <role>'"
+      );
       process.exit(1);
     }
     loginCommand({ role, refresh: options.refresh });

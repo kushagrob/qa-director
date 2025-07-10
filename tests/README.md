@@ -36,6 +36,7 @@ The tests focus on critical functionality:
 ## Excluded from Testing
 
 As per requirements, the following are not tested:
+
 - Logger utilities
 - Constants and static data
 - Simple utility functions
@@ -43,9 +44,10 @@ As per requirements, the following are not tested:
 ## Test Environment
 
 Tests run in isolated environments with:
+
 - Mocked file system operations
 - Temporary directories for each test
 - Mocked external dependencies (APIs, CLI tools)
 - Automatic cleanup after each test
 
-This ensures tests are fast, reliable, and don't interfere with each other. 
+This ensures tests are fast, reliable, and don't interfere with each other.

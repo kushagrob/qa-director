@@ -2,7 +2,7 @@ import fs from "fs";
 import path from "path";
 import { loggers } from "./logger.js";
 
-export const createSetupScaffold = (envDir: string) => `
+export const SETUP_SCAFFOLD = `
 import { test as setup } from '@playwright/test';
 import { Page, BrowserContext } from '@playwright/test';
 import dotenv from 'dotenv';
@@ -10,7 +10,7 @@ import path from 'path';
 import fs from 'fs/promises';
 import qa from '../qa-director.config.js';
 
-dotenv.config({ path: '.env.qa' });
+dotenv.config({ path: qa.envDir });
 
 type RoleConfig = {
   /** Absolute path for the storageState JSON this role will write */

@@ -1,17 +1,17 @@
-import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
-import { cleanupTempDir, createTempDir } from './setup.js';
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+import { cleanupTempDir, createTempDir } from "./setup.js";
 
-vi.mock('@anthropic-ai/claude-code', () => ({
+vi.mock("@anthropic-ai/claude-code", () => ({
   query: vi.fn(),
 }));
 
-vi.mock('inquirer', () => ({
+vi.mock("inquirer", () => ({
   default: {
     prompt: vi.fn(),
   },
 }));
 
-vi.mock('../src/utils/logger.js', () => ({
+vi.mock("../src/utils/logger.js", () => ({
   loggers: {
     debug: vi.fn(),
     warn: vi.fn(),
@@ -21,7 +21,7 @@ vi.mock('../src/utils/logger.js', () => ({
   },
 }));
 
-vi.mock('chalk', () => ({
+vi.mock("chalk", () => ({
   default: {
     cyan: (str: string) => str,
     red: (str: string) => str,
@@ -30,7 +30,7 @@ vi.mock('chalk', () => ({
   },
 }));
 
-describe('Claude Code Integration', () => {
+describe("Claude Code Integration", () => {
   let tempDir: string;
   let originalCwd: string;
   let originalApiKey: string | undefined;
@@ -43,9 +43,9 @@ describe('Claude Code Integration', () => {
     originalApiKey = process.env.ANTHROPIC_API_KEY;
     process.chdir(tempDir);
 
-    const { query } = await import('@anthropic-ai/claude-code');
-    const inquirer = await import('inquirer');
-    
+    const { query } = await import("@anthropic-ai/claude-code");
+    const inquirer = await import("inquirer");
+
     mockQuery = vi.mocked(query);
     mockInquirer = vi.mocked(inquirer.default);
   });
@@ -57,20 +57,20 @@ describe('Claude Code Integration', () => {
     vi.clearAllMocks();
   });
 
-  describe('callClaudeCode', () => {
-    it('should successfully execute Claude Code query', async () => {
-      process.env.ANTHROPIC_API_KEY = 'sk-ant-test-key';
-      
+  describe("callClaudeCode", () => {
+    it("should successfully execute Claude Code query", async () => {
+      process.env.ANTHROPIC_API_KEY = "sk-ant-test-key";
+
       const mockMessages = [
         {
-          type: 'assistant',
+          type: "assistant",
           message: {
-            content: [{ type: 'text', text: 'Creating test file...' }],
+            content: [{ type: "text", text: "Creating test file..." }],
           },
         },
         {
-          type: 'result',
-          subtype: 'success',
+          type: "result",
+          subtype: "success",
           duration_ms: 5000,
           total_cost_usd: 0.05,
           num_turns: 3,
@@ -83,9 +83,9 @@ describe('Claude Code Integration', () => {
         }
       });
 
-      const { callClaudeCode } = await import('../src/core/claude-code.js');
-      
-      const result = await callClaudeCode('Create a test file', {
+      const { callClaudeCode } = await import("../src/core/claude-code.js");
+
+      const result = await callClaudeCode("Create a test file", {
         maxTurns: 5,
         cwd: tempDir,
       });
@@ -97,26 +97,28 @@ describe('Claude Code Integration', () => {
       expect(result.messages).toEqual(mockMessages);
     });
 
-    it('should handle missing API key', async () => {
+    it("should handle missing API key", async () => {
       delete process.env.ANTHROPIC_API_KEY;
-      
+
       mockInquirer.prompt.mockResolvedValueOnce({ shouldProvideKey: false });
 
-      const { callClaudeCode } = await import('../src/core/claude-code.js');
-      
-      const result = await callClaudeCode('Test prompt');
+      const { callClaudeCode } = await import("../src/core/claude-code.js");
+
+      const result = await callClaudeCode("Test prompt");
 
       expect(result.success).toBe(false);
-      expect(result.error).toBe('ANTHROPIC_API_KEY environment variable is not set');
+      expect(result.error).toBe(
+        "ANTHROPIC_API_KEY environment variable is not set"
+      );
     });
 
-    it('should handle execution errors', async () => {
-      process.env.ANTHROPIC_API_KEY = 'sk-ant-test-key';
-      
+    it("should handle execution errors", async () => {
+      process.env.ANTHROPIC_API_KEY = "sk-ant-test-key";
+
       const mockMessages = [
         {
-          type: 'result',
-          subtype: 'error_during_execution',
+          type: "result",
+          subtype: "error_during_execution",
           duration_ms: 2000,
           total_cost_usd: 0.02,
           num_turns: 1,
@@ -129,28 +131,28 @@ describe('Claude Code Integration', () => {
         }
       });
 
-      const { callClaudeCode } = await import('../src/core/claude-code.js');
-      
-      const result = await callClaudeCode('Failing task');
+      const { callClaudeCode } = await import("../src/core/claude-code.js");
+
+      const result = await callClaudeCode("Failing task");
 
       expect(result.success).toBe(false);
-      expect(result.error).toContain('Error occurred during execution');
+      expect(result.error).toContain("Error occurred during execution");
     });
 
-    it('should handle query exceptions', async () => {
-      process.env.ANTHROPIC_API_KEY = 'sk-ant-test-key';
-      
-      const error = new Error('Network error');
+    it("should handle query exceptions", async () => {
+      process.env.ANTHROPIC_API_KEY = "sk-ant-test-key";
+
+      const error = new Error("Network error");
       mockQuery.mockImplementation(() => {
         throw error;
       });
 
-      const { callClaudeCode } = await import('../src/core/claude-code.js');
-      
-      const result = await callClaudeCode('Test prompt');
+      const { callClaudeCode } = await import("../src/core/claude-code.js");
+
+      const result = await callClaudeCode("Test prompt");
 
       expect(result.success).toBe(false);
-      expect(result.error).toBe('Network error');
+      expect(result.error).toBe("Network error");
     });
   });
-}); 
+});

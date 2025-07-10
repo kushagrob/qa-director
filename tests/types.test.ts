@@ -1,45 +1,45 @@
-import { describe, expect, it } from 'vitest';
-import { QADirectorConfigSchema, RoleSchema } from '../src/types/index.js';
+import { describe, expect, it } from "vitest";
+import { QADirectorConfigSchema, RoleSchema } from "../src/types/index.js";
 
-describe('Type Validation', () => {
-  describe('RoleSchema', () => {
-    it('should validate valid role object', () => {
+describe("Type Validation", () => {
+  describe("RoleSchema", () => {
+    it("should validate valid role object", () => {
       const validRole = {
-        name: 'user',
-        storagePath: './playwright/.auth/user.json',
-        testMatch: ['./tests/user/**/*.test.ts'],
-        envVars: ['QA_USER_EMAIL', 'QA_USER_PASSWORD'],
-        folder: './tests/user',
+        name: "user",
+        storagePath: "./playwright/.auth/user.json",
+        testMatch: ["./tests/user/**/*.test.ts"],
+        envVars: ["QA_USER_EMAIL", "QA_USER_PASSWORD"],
+        folder: "./tests/user",
       };
 
       const result = RoleSchema.safeParse(validRole);
       expect(result.success).toBe(true);
-      
+
       if (result.success) {
         expect(result.data).toEqual(validRole);
       }
     });
 
-    it('should validate minimal role object', () => {
+    it("should validate minimal role object", () => {
       const minimalRole = {
-        name: 'admin',
-        storagePath: './playwright/.auth/admin.json',
+        name: "admin",
+        storagePath: "./playwright/.auth/admin.json",
       };
 
       const result = RoleSchema.safeParse(minimalRole);
       expect(result.success).toBe(true);
-      
+
       if (result.success) {
-        expect(result.data.name).toBe('admin');
-        expect(result.data.storagePath).toBe('./playwright/.auth/admin.json');
+        expect(result.data.name).toBe("admin");
+        expect(result.data.storagePath).toBe("./playwright/.auth/admin.json");
       }
     });
 
-    it('should reject invalid role object', () => {
+    it("should reject invalid role object", () => {
       const invalidRole = {
-        name: 'user',
+        name: "user",
         // Missing required storagePath
-        testMatch: ['./tests/user/**/*.test.ts'],
+        testMatch: ["./tests/user/**/*.test.ts"],
       };
 
       const result = RoleSchema.safeParse(invalidRole);
@@ -47,61 +47,61 @@ describe('Type Validation', () => {
     });
   });
 
-  describe('QADirectorConfigSchema', () => {
-    it('should validate valid config object', () => {
+  describe("QADirectorConfigSchema", () => {
+    it("should validate valid config object", () => {
       const validConfig = {
-        baseURL: 'http://localhost:3000',
-        testDir: './tests',
+        baseURL: "http://localhost:3000",
+        testDir: "./tests",
         roles: [
           {
-            name: 'user',
-            storagePath: './playwright/.auth/user.json',
-            testMatch: ['./tests/user/**/*.test.ts'],
-            envVars: ['QA_USER_EMAIL', 'QA_USER_PASSWORD'],
+            name: "user",
+            storagePath: "./playwright/.auth/user.json",
+            testMatch: ["./tests/user/**/*.test.ts"],
+            envVars: ["QA_USER_EMAIL", "QA_USER_PASSWORD"],
           },
         ],
-        authDir: 'playwright/.auth',
+        authDir: "playwright/.auth",
         githubActions: {
           enabled: true,
-          path: '.github/workflows/qa-director.yml',
+          path: ".github/workflows/qa-director.yml",
         },
         setup: {
-          path: './tests/auth.setup.ts',
+          path: "./tests/auth.setup.ts",
           enabled: true,
-          projectName: 'setup',
+          projectName: "setup",
         },
-        envDir: '.env.qa',
-        playwrightConfig: 'playwright.config.ts',
+        envDir: ".env.qa",
+        playwrightConfig: "playwright.config.ts",
       };
 
       const result = QADirectorConfigSchema.safeParse(validConfig);
       expect(result.success).toBe(true);
-      
+
       if (result.success) {
         expect(result.data).toEqual(validConfig);
       }
     });
 
-    it('should reject config with missing required fields', () => {
+    it("should reject config with missing required fields", () => {
       const invalidConfig = {
-        baseURL: 'http://localhost:3000',
+        baseURL: "http://localhost:3000",
         // Missing required testDir
         roles: [],
-        authDir: 'playwright/.auth',
+        authDir: "playwright/.auth",
         githubActions: {
           enabled: true,
-          path: '.github/workflows/qa-director.yml',
+          path: ".github/workflows/qa-director.yml",
         },
         setup: {
-          path: './tests/auth.setup.ts',
+          path: "./tests/auth.setup.ts",
           enabled: true,
         },
-        envDir: '.env.qa',
-        playwrightConfig: 'playwright.config.ts',
+        envDir: ".env.qa",
+        playwrightConfig: "playwright.config.ts",
       };
 
       const result = QADirectorConfigSchema.safeParse(invalidConfig);
       expect(result.success).toBe(false);
     });
   });
-}); 
+});

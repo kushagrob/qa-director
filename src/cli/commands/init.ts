@@ -4,16 +4,16 @@ import inquirer from "inquirer";
 import path from "path";
 import { configExists, saveConfig } from "../../core/config.js";
 import {
-    detectBaseURL,
-    detectPlaywrightConfig,
-    detectTestDir,
-    isPlaywrightProject,
+  detectBaseURL,
+  detectPlaywrightConfig,
+  detectTestDir,
+  isPlaywrightProject,
 } from "../../core/detection.js";
 import {
-    createEnvFiles,
-    createSetupFile,
-    ensureDirectoryExists,
-    updatePlaywrightConfigWithSetup,
+  createEnvFiles,
+  createSetupFile,
+  ensureDirectoryExists,
+  updatePlaywrightConfigWithSetup,
 } from "../../core/files.js";
 import { InitOptions, QADirectorConfig } from "../../types/index.js";
 import { CLI_MESSAGES, DEFAULT_QA_CONFIG } from "../../utils/constants.js";

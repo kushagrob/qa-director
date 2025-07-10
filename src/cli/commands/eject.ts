@@ -1,11 +1,10 @@
-import inquirer from "inquirer";
 import chalk from "chalk";
 import fs from "fs/promises";
+import inquirer from "inquirer";
 import path from "path";
-import { loadConfig, removeRole, getRole } from "../../core/config.js";
-import { fileExists } from "../../core/files.js";
 import { callClaudeCode } from "../../core/claude-code.js";
-import { CLI_MESSAGES } from "../../utils/constants.js";
+import { getRole, loadConfig, removeRole } from "../../core/config.js";
+import { fileExists } from "../../core/files.js";
 import { EjectOptions, QADirectorConfig, Role } from "../../types/index.js";
 
 interface FileToRemove {

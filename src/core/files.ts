@@ -1,17 +1,17 @@
-import fs from "fs/promises";
-import path from "path";
-import inquirer from "inquirer";
 import chalk from "chalk";
+import fs from "fs/promises";
+import inquirer from "inquirer";
+import path from "path";
 import { QADirectorConfig, Role } from "../types/index.js";
 import {
-  createSetupScaffold,
   createSetupProjectConfig,
+  SETUP_SCAFFOLD,
 } from "../utils/constants.js";
-import { callClaudeCode } from "./claude-code.js";
 import {
-  createRoleAdditionPrompt,
   addToPlaywrightConfigPrompt,
+  createRoleAdditionPrompt,
 } from "../utils/prompts.js";
+import { callClaudeCode } from "./claude-code.js";
 
 export async function createSetupFile(config: QADirectorConfig): Promise<void> {
   const setupPath = config.setup.path;
@@ -19,7 +19,7 @@ export async function createSetupFile(config: QADirectorConfig): Promise<void> {
 
   await fs.mkdir(setupDir, { recursive: true });
 
-  const scaffold = createSetupScaffold(config.envDir);
+  const scaffold = SETUP_SCAFFOLD;
   await fs.writeFile(setupPath, scaffold);
 }
 

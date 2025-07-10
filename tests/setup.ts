@@ -1,6 +1,6 @@
-import fs from 'fs/promises';
-import path from 'path';
-import { afterEach, beforeEach, vi } from 'vitest';
+import fs from "fs/promises";
+import path from "path";
+import { afterEach, beforeEach, vi } from "vitest";
 
 global.console = {
   ...console,
@@ -10,14 +10,14 @@ global.console = {
   info: vi.fn(),
 };
 
-process.env.NODE_ENV = 'test';
-process.env.ANTHROPIC_API_KEY = 'test-key';
+process.env.NODE_ENV = "test";
+process.env.ANTHROPIC_API_KEY = "test-key";
 
-const fixturesDir = path.join(process.cwd(), 'tests', 'fixtures');
+const fixturesDir = path.join(process.cwd(), "tests", "fixtures");
 
 beforeEach(async () => {
   vi.clearAllMocks();
-  
+
   try {
     await fs.mkdir(fixturesDir, { recursive: true });
   } catch (error) {
@@ -35,7 +35,10 @@ export const createTempDir = async (name: string): Promise<string> => {
   return tempDir;
 };
 
-export const createTempFile = async (filePath: string, content: string): Promise<void> => {
+export const createTempFile = async (
+  filePath: string,
+  content: string
+): Promise<void> => {
   const dir = path.dirname(filePath);
   await fs.mkdir(dir, { recursive: true });
   await fs.writeFile(filePath, content);
@@ -47,4 +50,4 @@ export const cleanupTempDir = async (dirPath: string): Promise<void> => {
   } catch (error) {
     // Directory doesn't exist or already cleaned up
   }
-}; 
+};

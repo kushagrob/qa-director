@@ -262,7 +262,7 @@ async function runGeneratedTest(config: any, roleConfig: any): Promise<void> {
     const testPatterns = roleConfig.testMatch || [
       "tests/**/*.{test,spec}.{js,ts}",
     ];
-    let allTestFiles: string[] = [];
+    const allTestFiles: string[] = [];
 
     for (const pattern of testPatterns) {
       const files = await glob(pattern);

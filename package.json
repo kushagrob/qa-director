@@ -1,6 +1,6 @@
 {
   "name": "qa-director",
-  "version": "1.0.0",
+  "version": "0.1.0",
   "description": "AI-powered E2E test generation and management",
   "type": "module",
   "main": "dist/index.js",
@@ -44,6 +44,11 @@
     "url": "https://github.com/kushagrob/qa-director/issues"
   },
   "packageManager": "pnpm@10.12.1",
+  "pnpm": {
+    "overrides": {
+      "esbuild": "^0.25.5"
+    }
+  },
   "dependencies": {
     "@ai-sdk/anthropic": "^1.2.12",
     "@anthropic-ai/claude-code": "^1.0.35",
@@ -68,13 +73,13 @@
     "@types/prettier": "^3.0.0",
     "@typescript-eslint/eslint-plugin": "^6.0.0",
     "@typescript-eslint/parser": "^6.0.0",
-    "@vitest/coverage-v8": "^2.0.0",
-    "@vitest/ui": "^2.0.0",
+    "@vitest/coverage-v8": "^2.1.9",
+    "@vitest/ui": "^2.1.9",
     "eslint": "^8.0.0",
     "eslint-config-prettier": "^9.0.0",
     "prettier": "^3.6.2",
     "tsx": "^4.20.3",
     "typescript": "^5.8.3",
-    "vitest": "^2.0.0"
+    "vitest": "^2.1.9"
   }
 }

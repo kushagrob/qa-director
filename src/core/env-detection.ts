@@ -5,19 +5,24 @@ interface FillPattern {
   type: "email" | "password";
 }
 
-export async function detectEnvVars(playwrightCode: string, roleName?: string): Promise<EnvVar[]> {
+export async function detectEnvVars(
+  playwrightCode: string,
+  roleName?: string
+): Promise<EnvVar[]> {
   const envVars: EnvVar[] = [];
 
   // Field-name-based patterns only (no content fallbacks)
   const fillPatterns: FillPattern[] = [
     // Email/Username fields - match field name
     {
-      pattern: /\.getByRole\(['"`]textbox['"`],\s*\{\s*name:\s*['"`]([^'"`]*(?:[eE]mail|[uU]sername|[uU]ser)[^'"`]*)['"`]\s*\}\)[\s\S]*?\.fill\(['"`]([^'"`]+)['"`]\)/g,
+      pattern:
+        /\.getByRole\(['"`]textbox['"`],\s*\{\s*name:\s*['"`]([^'"`]*(?:[eE]mail|[uU]sername|[uU]ser)[^'"`]*)['"`]\s*\}\)[\s\S]*?\.fill\(['"`]([^'"`]+)['"`]\)/g,
       type: "email" as const,
     },
     // Password fields - match field name
     {
-      pattern: /\.getByRole\(['"`]textbox['"`],\s*\{\s*name:\s*['"`]([^'"`]*[pP]assword[^'"`]*)['"`]\s*\}\)[\s\S]*?\.fill\(['"`]([^'"`]+)['"`]\)/g,
+      pattern:
+        /\.getByRole\(['"`]textbox['"`],\s*\{\s*name:\s*['"`]([^'"`]*[pP]assword[^'"`]*)['"`]\s*\}\)[\s\S]*?\.fill\(['"`]([^'"`]+)['"`]\)/g,
       type: "password" as const,
     },
   ];
@@ -80,23 +85,32 @@ function isCommonTestData(value: string): boolean {
   return commonTestData.some((data) => lowerValue.includes(data));
 }
 
-
-
-function generateEnvVarName(value: string, type: EnvVar["type"], fieldContext?: string, roleName?: string): string {
+function generateEnvVarName(
+  value: string,
+  type: EnvVar["type"],
+  fieldContext?: string,
+  roleName?: string
+): string {
   // Use role name if provided, otherwise default to USER
   const rolePrefix = roleName ? roleName.toUpperCase() : "USER";
 
   switch (type) {
     case "email":
       // Check if admin context from field name or value
-      if (fieldContext?.toLowerCase().includes("admin") || value.toLowerCase().includes("admin")) {
+      if (
+        fieldContext?.toLowerCase().includes("admin") ||
+        value.toLowerCase().includes("admin")
+      ) {
         return "QA_ADMIN_EMAIL";
       } else {
         return `QA_${rolePrefix}_EMAIL`;
       }
     case "password":
       // Check if admin context from field name or value
-      if (fieldContext?.toLowerCase().includes("admin") || value.toLowerCase().includes("admin")) {
+      if (
+        fieldContext?.toLowerCase().includes("admin") ||
+        value.toLowerCase().includes("admin")
+      ) {
         return "QA_ADMIN_PASSWORD";
       } else {
         return `QA_${rolePrefix}_PASSWORD`;
