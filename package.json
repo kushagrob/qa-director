@@ -1,0 +1,80 @@
+{
+  "name": "qa-director",
+  "version": "1.0.0",
+  "description": "AI-powered E2E test generation and management",
+  "type": "module",
+  "main": "dist/index.js",
+  "bin": {
+    "qa-director": "./dist/src/cli/index.js"
+  },
+  "scripts": {
+    "build": "tsc",
+    "build:watch": "tsc --watch",
+    "dev": "tsx src/cli/index.ts",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:ui": "vitest --ui",
+    "test:coverage": "vitest run --coverage",
+    "test:e2e": "playwright test",
+    "test:e2e:ui": "playwright test --ui",
+    "test:e2e:debug": "playwright test --debug",
+    "lint": "eslint src --ext .ts",
+    "lint:fix": "eslint src --ext .ts --fix",
+    "typecheck": "tsc --noEmit",
+    "clean": "rm -rf dist",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "prepublishOnly": "npm run clean && npm run build && npm run typecheck && npm run lint && npm run test"
+  },
+  "keywords": [
+    "playwright",
+    "e2e",
+    "testing",
+    "ai",
+    "automation"
+  ],
+  "author": "Kushagro Bhattacharjee <kush@trycheckpoint.ai>",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/kushagrob/qa-director.git"
+  },
+  "homepage": "https://github.com/kushagrob/qa-director#readme",
+  "bugs": {
+    "url": "https://github.com/kushagrob/qa-director/issues"
+  },
+  "packageManager": "pnpm@10.12.1",
+  "dependencies": {
+    "@ai-sdk/anthropic": "^1.2.12",
+    "@anthropic-ai/claude-code": "^1.0.35",
+    "@playwright/mcp": "^0.0.29",
+    "ai": "^4.3.17",
+    "chalk": "^5.3.0",
+    "commander": "^12.0.0",
+    "dotenv": "^16.4.5",
+    "esbuild": "^0.25.5",
+    "glob": "^10.3.10",
+    "inquirer": "^9.2.12",
+    "yaml": "^2.3.4",
+    "zod": "^3.25.0"
+  },
+  "peerDependencies": {
+    "@playwright/test": "^1.53.1"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.53.1",
+    "@types/inquirer": "^9.0.7",
+    "@types/node": "^20.0.0",
+    "@types/prettier": "^3.0.0",
+    "@typescript-eslint/eslint-plugin": "^6.0.0",
+    "@typescript-eslint/parser": "^6.0.0",
+    "@vitest/coverage-v8": "^2.0.0",
+    "@vitest/ui": "^2.0.0",
+    "eslint": "^8.0.0",
+    "eslint-config-prettier": "^9.0.0",
+    "prettier": "^3.6.2",
+    "tsx": "^4.20.3",
+    "typescript": "^5.8.3",
+    "vitest": "^2.0.0"
+  }
+}

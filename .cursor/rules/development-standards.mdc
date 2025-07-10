@@ -1,0 +1,174 @@
+---
+description: Writing new code, following TypeScript patterns, implementing CLI commands, file operations, AI integration, GitHub Actions setup, and error handling
+alwaysApply: false
+---
+# Development Standards
+
+## TypeScript Patterns
+- **Strict mode** - no `any` types, full type safety
+- **Zod validation** - runtime type checking for all external data
+- **Error handling** - Result pattern for operations that can fail
+- **Async/await** - consistent async patterns, no raw Promises
+
+### Key Type Patterns
+```typescript
+// Result pattern for error handling
+type Result<T, E = Error> = 
+  | { success: true; data: T }
+  | { success: false; error: E };
+
+// Zod schema + TypeScript type
+const ConfigSchema = z.object({
+  roles: z.record(z.string(), RoleSchema),
+  testDir: z.string().optional()
+});
+type Config = z.infer<typeof ConfigSchema>;
+```
+
+## CLI Command Pattern
+All commands in [src/cli/commands/](mdc:src/cli/commands/) follow this structure:
+1. **Validate prerequisites** - check config, API keys
+2. **Load configuration** - use `loadConfig()` 
+3. **Execute core logic** - call appropriate core modules
+4. **Handle errors** - user-friendly messages, proper exit codes
+5. **Provide feedback** - chalk colors, progress indicators
+
+## File Operations
+- **Atomic operations** - temp files, then rename
+- **Path safety** - use `path.join()` for cross-platform compatibility
+- **Resource cleanup** - proper cleanup in finally blocks
+- **Permission handling** - check file permissions before operations
+
+## AI Integration Safety
+- **Tool allowlists** - restrict AI to specific operations
+- **Permission gates** - human approval for sensitive operations
+- **Resource cleanup** - proper MCP client lifecycle management
+- **Error recovery** - graceful handling of AI failures
+
+### Claude Code Usage Pattern
+```typescript
+await callClaudeCode(
+  "Update file with new role configuration",
+  { 
+    allowedTools: ['edit_file', 'read_file'],
+    disallowedTools: ['run_terminal_cmd'],
+    requireConfirmation: false
+  }
+);
+```
+
+## GitHub Actions Integration
+- **Chromium only** - single browser for consistency
+- **Role-based secrets** - ADMIN_*, USER_* environment variables
+- **Matrix strategy** - parallel execution for multiple roles
+- **Artifact collection** - screenshots/videos on failure
+- **Automatic workflow updates** - sync with configuration changes
+
+### Generated Workflow Features
+- **Scheduled runs** - daily E2E tests
+- **PR triggers** - run on pull requests
+- **Secret management** - role-specific environment variables
+- **Failure handling** - continue other roles if one fails
+
+## Security Requirements
+- **No secrets in code** - all sensitive data in .env.qa
+- **Role isolation** - separate auth states and environment variables
+- **Environment separation** - different secrets for different roles
+- **AI safety** - controlled tool access and permission gates
+
+## Module Organization
+- **Named exports** - avoid default exports
+- **Barrel exports** - index files for clean interfaces
+- **Dependency injection** - pass dependencies explicitly
+- **Single responsibility** - each module has one clear purpose
+
+## Error Handling Philosophy
+- **User-friendly messages** - clear, actionable error descriptions
+- **Proper exit codes** - for CI/CD integration
+- **Graceful degradation** - continue when possible, fail safely
+- **Debug information** - detailed logging for troubleshooting
+# Development Standards
+
+## TypeScript Patterns
+- **Strict mode** - no `any` types, full type safety
+- **Zod validation** - runtime type checking for all external data
+- **Error handling** - Result pattern for operations that can fail
+- **Async/await** - consistent async patterns, no raw Promises
+
+### Key Type Patterns
+```typescript
+// Result pattern for error handling
+type Result<T, E = Error> = 
+  | { success: true; data: T }
+  | { success: false; error: E };
+
+// Zod schema + TypeScript type
+const ConfigSchema = z.object({
+  roles: z.record(z.string(), RoleSchema),
+  testDir: z.string().optional()
+});
+type Config = z.infer<typeof ConfigSchema>;
+```
+
+## CLI Command Pattern
+All commands in [src/cli/commands/](mdc:src/cli/commands/) follow this structure:
+1. **Validate prerequisites** - check config, API keys
+2. **Load configuration** - use `loadConfig()` 
+3. **Execute core logic** - call appropriate core modules
+4. **Handle errors** - user-friendly messages, proper exit codes
+5. **Provide feedback** - chalk colors, progress indicators
+
+## File Operations
+- **Atomic operations** - temp files, then rename
+- **Path safety** - use `path.join()` for cross-platform compatibility
+- **Resource cleanup** - proper cleanup in finally blocks
+- **Permission handling** - check file permissions before operations
+
+## AI Integration Safety
+- **Tool allowlists** - restrict AI to specific operations
+- **Permission gates** - human approval for sensitive operations
+- **Resource cleanup** - proper MCP client lifecycle management
+- **Error recovery** - graceful handling of AI failures
+
+### Claude Code Usage Pattern
+```typescript
+await callClaudeCode(
+  "Update file with new role configuration",
+  { 
+    allowedTools: ['edit_file', 'read_file'],
+    disallowedTools: ['run_terminal_cmd'],
+    requireConfirmation: false
+  }
+);
+```
+
+## GitHub Actions Integration
+- **Chromium only** - single browser for consistency
+- **Role-based secrets** - ADMIN_*, USER_* environment variables
+- **Matrix strategy** - parallel execution for multiple roles
+- **Artifact collection** - screenshots/videos on failure
+- **Automatic workflow updates** - sync with configuration changes
+
+### Generated Workflow Features
+- **Scheduled runs** - daily E2E tests
+- **PR triggers** - run on pull requests
+- **Secret management** - role-specific environment variables
+- **Failure handling** - continue other roles if one fails
+
+## Security Requirements
+- **No secrets in code** - all sensitive data in .env.qa
+- **Role isolation** - separate auth states and environment variables
+- **Environment separation** - different secrets for different roles
+- **AI safety** - controlled tool access and permission gates
+
+## Module Organization
+- **Named exports** - avoid default exports
+- **Barrel exports** - index files for clean interfaces
+- **Dependency injection** - pass dependencies explicitly
+- **Single responsibility** - each module has one clear purpose
+
+## Error Handling Philosophy
+- **User-friendly messages** - clear, actionable error descriptions
+- **Proper exit codes** - for CI/CD integration
+- **Graceful degradation** - continue when possible, fail safely
+- **Debug information** - detailed logging for troubleshooting

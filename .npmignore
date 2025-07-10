@@ -1,0 +1,53 @@
+# Source files
+src/
+*.ts
+!dist/**/*.d.ts
+
+# Development files
+.vscode/
+.cursor/
+tests/
+coverage/
+*.test.ts
+*.spec.ts
+
+# Build artifacts
+tsconfig.json
+tsconfig.*.json
+.tsbuildinfo
+
+# Development dependencies
+.editorconfig
+.prettierrc.json
+.prettierignore
+.eslintrc.js
+.eslintrc.json
+.eslintignore
+
+# Git and CI
+.git/
+.github/
+.gitignore
+
+# Logs and temporary files
+*.log
+*.tmp
+*.temp
+.DS_Store
+Thumbs.db
+
+# Environment files
+.env*
+.auth/
+
+# Package manager files
+pnpm-lock.yaml
+yarn.lock
+package-lock.json
+
+# Playwright specific
+playwright.config.ts
+playwright-report/
+test-results/
+blob-report/
+playwright/.cache/ 

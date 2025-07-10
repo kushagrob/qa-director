@@ -1,0 +1,160 @@
+---
+description: Understanding system architecture, core modules, data flow, AI integration, configuration management, and how commands work together
+alwaysApply: false
+---
+# QA Director Architecture
+
+## Core System
+AI-powered CLI that transforms natural language → Playwright E2E tests using a two-AI system:
+1. **Browser Agent AI** (Playwright MCP): Automates browser interactions  
+2. **Claude Code AI**: Generates test code from browser logs
+
+## Architecture Flow
+```
+CLI Commands (src/cli/) → Core Services (src/core/) → AI Integration → File Generation
+```
+
+**Key Commands:**
+- `qa-director init` - Bootstrap in Playwright project
+- `qa-director login --role X` - Record auth flows, detect env vars
+- `qa-director generate --role X "test description"` - Generate tests
+
+## Core Modules
+
+### Configuration: [src/core/config.ts](mdc:src/core/config.ts)
+- **Type-safe config** with Zod validation
+- **Role management** - separate auth states per role
+- **Dynamic loading** of TypeScript config files
+- **Key functions**: `loadConfig()`, `addRole()`, `removeRole()`
+
+### Detection: [src/core/detection.ts](mdc:src/core/detection.ts)
+- **Project detection** - finds Playwright configs automatically
+- **Environment detection** - extracts base URLs, test directories
+- **GitHub Actions detection** - identifies existing workflows
+
+### File Management: [src/core/files.ts](mdc:src/core/files.ts)
+- **Setup file generation** - creates auth scaffolds
+- **Claude Code integration** - intelligent file updates
+- **Environment files** - manages .env.qa securely
+
+### Environment Detection: [src/core/env-detection.ts](mdc:src/core/env-detection.ts)
+- **Smart pattern matching** - detects emails, passwords, tokens
+- **Secure replacement** - replaces sensitive data with env vars
+- **Context awareness** - distinguishes selectors from real data
+
+### AI Integration: [src/core/claude-code.ts](mdc:src/core/claude-code.ts) & [src/core/browser-agent.ts](mdc:src/core/browser-agent.ts)
+- **MCP client management** - Playwright browser automation
+- **Streaming responses** - real-time AI interaction
+- **Tool filtering** - safety controls for AI operations
+- **Resource cleanup** - proper session management
+
+## Type System: [src/types/index.ts](mdc:src/types/index.ts)
+```typescript
+interface Config {
+  roles: Record<string, Role>;
+  testDir?: string;
+  baseURL?: string;
+  useRoleFolders?: boolean;
+}
+
+interface Role {
+  authStatePath: string;
+  testFolder?: string;
+}
+```
+
+## Security Model
+- **Role isolation** - separate auth states, env vars, test folders
+- **No secrets in config** - all sensitive data in .env.qa
+- **AI safety** - controlled tool access, permission gates
+- **Environment separation** - role-specific variables (ADMIN_*, USER_*)
+
+## Data Flow
+1. **Init**: Detect project → create config → setup files
+2. **Login**: Record flow → detect env vars → update auth state
+3. **Generate**: Load role → run browser AI → generate code with Claude Code
+
+## Critical Dependencies
+- **Commander.js** - CLI framework
+- **Playwright MCP** - Browser automation AI
+- **Claude Code** - File manipulation AI
+- **Zod** - Runtime type validation
+- **Inquirer** - Interactive prompts
+# QA Director Architecture
+
+## Core System
+AI-powered CLI that transforms natural language → Playwright E2E tests using a two-AI system:
+1. **Browser Agent AI** (Playwright MCP): Automates browser interactions  
+2. **Claude Code AI**: Generates test code from browser logs
+
+## Architecture Flow
+```
+CLI Commands (src/cli/) → Core Services (src/core/) → AI Integration → File Generation
+```
+
+**Key Commands:**
+- `qa-director init` - Bootstrap in Playwright project
+- `qa-director login --role X` - Record auth flows, detect env vars
+- `qa-director generate --role X "test description"` - Generate tests
+
+## Core Modules
+
+### Configuration: [src/core/config.ts](mdc:src/core/config.ts)
+- **Type-safe config** with Zod validation
+- **Role management** - separate auth states per role
+- **Dynamic loading** of TypeScript config files
+- **Key functions**: `loadConfig()`, `addRole()`, `removeRole()`
+
+### Detection: [src/core/detection.ts](mdc:src/core/detection.ts)
+- **Project detection** - finds Playwright configs automatically
+- **Environment detection** - extracts base URLs, test directories
+- **GitHub Actions detection** - identifies existing workflows
+
+### File Management: [src/core/files.ts](mdc:src/core/files.ts)
+- **Setup file generation** - creates auth scaffolds
+- **Claude Code integration** - intelligent file updates
+- **Environment files** - manages .env.qa securely
+
+### Environment Detection: [src/core/env-detection.ts](mdc:src/core/env-detection.ts)
+- **Smart pattern matching** - detects emails, passwords, tokens
+- **Secure replacement** - replaces sensitive data with env vars
+- **Context awareness** - distinguishes selectors from real data
+
+### AI Integration: [src/core/claude-code.ts](mdc:src/core/claude-code.ts) & [src/core/browser-agent.ts](mdc:src/core/browser-agent.ts)
+- **MCP client management** - Playwright browser automation
+- **Streaming responses** - real-time AI interaction
+- **Tool filtering** - safety controls for AI operations
+- **Resource cleanup** - proper session management
+
+## Type System: [src/types/index.ts](mdc:src/types/index.ts)
+```typescript
+interface Config {
+  roles: Record<string, Role>;
+  testDir?: string;
+  baseURL?: string;
+  useRoleFolders?: boolean;
+}
+
+interface Role {
+  authStatePath: string;
+  testFolder?: string;
+}
+```
+
+## Security Model
+- **Role isolation** - separate auth states, env vars, test folders
+- **No secrets in config** - all sensitive data in .env.qa
+- **AI safety** - controlled tool access, permission gates
+- **Environment separation** - role-specific variables (ADMIN_*, USER_*)
+
+## Data Flow
+1. **Init**: Detect project → create config → setup files
+2. **Login**: Record flow → detect env vars → update auth state
+3. **Generate**: Load role → run browser AI → generate code with Claude Code
+
+## Critical Dependencies
+- **Commander.js** - CLI framework
+- **Playwright MCP** - Browser automation AI
+- **Claude Code** - File manipulation AI
+- **Zod** - Runtime type validation
+- **Inquirer** - Interactive prompts
